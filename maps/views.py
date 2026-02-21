@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from .models import MapPoint, ArtifactCategory
 from .serializers import MapPointSerializer, ArtifactCategorySerializer
 from .permissions import IsEditor, IsAdmin, HasMapAccess

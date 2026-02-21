@@ -13,10 +13,10 @@ class MapPointSerializer(serializers.ModelSerializer):
     longitude = serializers.DecimalField(decimal_places=12, max_digits=20, write_only=True)
 
     class Meta:
-            model = MapPoint
-            fields = ['id', 'name', 'category', 'type', 'geometry', 'latitude', 'longitude', 'user_id', 'created_at']
+        model = MapPoint
+        fields = ['id', 'name', 'category', 'type', 'geometry', 'latitude', 'longitude', 'user_id', 'created_at']
 
-    def get_type(self, obj):
+    def get_type(self, obj): 
         return "Feature"
 
     def get_geometry(self, obj):

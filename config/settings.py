@@ -29,7 +29,7 @@ INSTALLED_APPS = [
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-with open('ec_public.key', 'r') as f:
+with open('ec_public.key', 'r', encoding='UTF-8') as f:
     JWT_PUBLIC_KEY = f.read()
 
 MIDDLEWARE = [
