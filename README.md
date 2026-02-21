@@ -33,7 +33,7 @@ They are converted into `coordinates` form using `get_geometry` method.
 ## Running locally
 
 1. Start MariaDB `buried-marks-maria-db` container: `docker compose up -d`.
-2. Create venv: `python3 -m venv venv && source venv/bin/activate pip install -r requirements.txt`.
+2. Create venv: `python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`.
 3. If you changed `models.py`, run `python manage.py makemigrations`.
 4. Run migrations: `python manage.py migrate`.
 5. Start server: `python manage.py runserver`.
