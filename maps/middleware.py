@@ -16,8 +16,10 @@ class JWTMiddleware:
                 request.user_id = payload.get('user_id')
                 request.user_role = payload.get('role')
 
-                #JUST FOR TEST
+                # FOR DEBUGGING
                 print("ROLE:", request.user_role)
+                print("ID:", request.user_id)
+
             except jwt.ExpiredSignatureError:
                 pass
             except jwt.InvalidTokenError:

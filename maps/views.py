@@ -17,6 +17,14 @@ class MapPointViewSet(viewsets.ModelViewSet):
     serializer_class = MapPointSerializer
     http_method_names = ['get', 'post', 'delete']
 
+    # FOR DEBUGGING
+    def create(self, request, *args, **kwargs):
+        print("BODY:", request.data)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        print("ERRORS:", serializer.errors)
+        return super().create(request, *args, **kwargs)
+
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             return [HasMapAccess()]

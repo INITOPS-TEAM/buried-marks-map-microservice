@@ -79,7 +79,7 @@ DATABASES = {
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Vue dev server
+    "http://localhost:5200",  # Vue dev server
 ]
 
 # Internationalization

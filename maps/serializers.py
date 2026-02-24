@@ -7,20 +7,14 @@ class ArtifactCategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class MapPointSerializer(serializers.ModelSerializer):
-    geometry = serializers.SerializerMethodField()
-    type = serializers.SerializerMethodField()
-    latitude = serializers.DecimalField(decimal_places=12, max_digits=20, write_only=True)
-    longitude = serializers.DecimalField(decimal_places=12, max_digits=20, write_only=True)
+    category = serializers.SlugRelatedField(
+        queryset=ArtifactCategory.objects.all(),
+        slug_field='name'
+    )
 
     class Meta:
         model = MapPoint
-        fields = ['id', 'name', 'category', 'type', 'geometry', 'latitude', 'longitude', 'user_id', 'created_at']
+        fields = ['id', 'label', 'category', 'lat', 'lng', 'author_id']
 
-    def get_type(self, obj): 
+    def get_type(self, obj):
         return "Feature"
-
-    def get_geometry(self, obj):
-        return {
-            "type": "Point",
-            "coordinates": [float(obj.longitude), float(obj.latitude)]
-        }
