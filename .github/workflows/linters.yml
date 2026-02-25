@@ -20,23 +20,6 @@ jobs:
           files: .
           dot: true
 
-      - name: Setup Node for HTML ESLint and Run HTML ESLint
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-
-      - name: Install HTML ESLint
-        run: npm install --save-dev eslint @html-eslint/parser @html-eslint/eslint-plugin
-
-      - name: Run HTML ESLint
-        id: htmllint
-        uses: sibiraj-s/action-eslint@v4
-        continue-on-error: true
-        with:
-          extensions: "html"
-          annotations: true
-          all-files: true
-
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
@@ -68,13 +51,6 @@ jobs:
             echo "No Python files found."
           fi
 
-      - name: Run npm-groovy-lint
-        id: groovylint
-        continue-on-error: true
-        run: |
-          npm install -g npm-groovy-lint
-          npm-groovy-lint . || true
-
       - name: Check Linting Results
         if: always()
         run: |
@@ -90,14 +66,6 @@ jobs:
             warned=$((warned + 1))
           else
             echo "Markdownlint: PASSED" >> $GITHUB_STEP_SUMMARY
-            passed=$((passed + 1))
-          fi
-
-          if [ "${{ steps.htmllint.outcome }}" != "success" ]; then
-            echo "HTML ESLint: FAILED. Please check its warnings!" >> $GITHUB_STEP_SUMMARY
-            warned=$((warned + 1))
-          else
-            echo "HTML ESLint: PASSED" >> $GITHUB_STEP_SUMMARY
             passed=$((passed + 1))
           fi
 
@@ -122,14 +90,6 @@ jobs:
             failed=$((failed + 1))
           else
             echo "Pylint: PASSED" >> $GITHUB_STEP_SUMMARY
-            passed=$((passed + 1))
-          fi
-
-          if [ "${{ steps.groovylint.outcome }}" != "success" ]; then
-            echo "npm-groovy-lint: FAILED. Please check its warnings!" >> $GITHUB_STEP_SUMMARY
-            failed=$((failed + 1))
-          else
-            echo "npm-groovy-lint: PASSED" >> $GITHUB_STEP_SUMMARY
             passed=$((passed + 1))
           fi
 

@@ -1,0 +1,7 @@
+.env
+ec_private.key
+ec_public.key
+/venv
+generate_token.py
+__pycache__/
+*.pyc
