@@ -72,7 +72,7 @@ DATABASES = {
         'NAME': os.getenv('MARIADB_DATABASE'),
         'USER': os.getenv('MARIADB_USER'),
         'PASSWORD': os.getenv('MARIADB_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'HOST': os.getenv('DATABASE_HOST'),
         'PORT': os.getenv('DATABASE_PORT', '3306'),
     }
 }
@@ -80,6 +80,7 @@ DATABASES = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5200",  # Vue dev server
+    # "*"
 ]
 
 # Internationalization
