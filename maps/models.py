@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class ArtifactCategory(models.Model):
 
     name = models.CharField(max_length=30, unique=True)
@@ -14,5 +15,14 @@ class MapPoint(models.Model):
     lng = models.DecimalField(decimal_places=18, max_digits=20, default=0.0)
     author_id = models.IntegerField()
 
+
     def __str__(self):
         return self.label
+
+class Confirmation(models.Model):
+    marker = models.ForeignKey(MapPoint, on_delete=models.CASCADE, related_name='confirmations')
+    author_id = models.IntegerField()
+    confirmed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = [['marker', 'author_id']]

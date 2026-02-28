@@ -1,5 +1,7 @@
-from rest_framework import viewsets
-from .models import MapPoint, ArtifactCategory
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import MapPoint, ArtifactCategory, Confirmation
 from .serializers import MapPointSerializer, ArtifactCategorySerializer
 from .permissions import IsEditor, IsAdmin, HasMapAccess
 
@@ -24,4 +26,38 @@ class MapPointViewSet(viewsets.ModelViewSet):
             return [IsEditor()]
         if self.action == 'destroy':
             return [IsAdmin()]
+        if self.action == 'confirm':
+            return [HasMapAccess()]
         return [HasMapAccess()]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+    @action(detail=True, methods=['post', 'delete'], url_path='confirm')
+    def confirm(self, request, pk=None):
+        marker = self.get_object()
+
+        if marker.author_id == request.user_id:
+            return Response(
+                {"error": "Cannot confirm your own marker."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if request.method == 'POST':
+            confirmation, created = Confirmation.objects.get_or_create(
+                marker=marker,
+                author_id=request.user_id
+            )
+            if not created:
+                return Response(
+                    {"error:" "Already confirmed."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            return Response(status=status.HTTP_201_CREATED)
+        if request.method == 'DELETE':
+            Confirmation.objects.filter(
+                marker=marker,
+                author_id=request.user_id
+            ).delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
