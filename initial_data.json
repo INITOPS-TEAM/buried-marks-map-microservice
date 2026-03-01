@@ -1,0 +1,13 @@
+[
+    {"model": "maps.artifactcategory", "pk": 1, "fields": {"name": "scout"}},
+    {"model": "maps.artifactcategory", "pk": 2, "fields": {"name": "danger"}},
+    {"model": "maps.artifactcategory", "pk": 3, "fields": {"name": "base"}},
+    {"model": "maps.mappoint", "pk": 1, "fields": {
+        "label": "Motherland monument",
+        "category": 1,
+        "lat": "50.426901450626360000",
+        "lng": "30.563747823436955000",
+        "author_id": 1
+
+    }}
+]
