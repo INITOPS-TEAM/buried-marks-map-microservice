@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser
 from .models import MapPoint, ArtifactCategory, Confirmation
 from .serializers import MapPointSerializer, ArtifactCategorySerializer
 from .permissions import IsEditor, IsAdmin, HasMapAccess
@@ -61,3 +62,12 @@ class MapPointViewSet(viewsets.ModelViewSet):
                 author_id=request.user_id
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['post'], url_path='image', parser_classes=[MultiPartParser])
+    def upload_image(self, request, pk=None):
+        marker = self.get_object()
+        if 'image' not in request.FILES:
+            return Response({"error": "No image provided."}, status=status.HTTP_400_BAD_REQUEST)
+        marker.image = request.FILES['image']
+        marker.save()
+        return Response({"image_url": marker.image.url}, status=status.HTTP_200_OK)
