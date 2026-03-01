@@ -14,6 +14,7 @@ class MapPoint(models.Model):
     lat = models.DecimalField(decimal_places=18, max_digits=20, default=0.0)
     lng = models.DecimalField(decimal_places=18, max_digits=20, default=0.0)
     author_id = models.IntegerField()
+    image = models.ImageField(upload_to='markers/', blank=True, null=True)
 
 
     def __str__(self):
