@@ -36,6 +36,12 @@ class MapPointViewSet(viewsets.ModelViewSet):
         context['request'] = self.request
         return context
 
+    def destroy(self, request, *args, **kwargs):
+        marker = self.get_object()
+        if marker.image:
+            marker.image.delete(save=False)
+        return super().destroy(request, *args, **kwargs)
+
     @action(detail=True, methods=['post', 'delete'], url_path='confirm')
     def confirm(self, request, pk=None):
         marker = self.get_object()
