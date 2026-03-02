@@ -25,10 +25,27 @@ In this case microservice uses `algorithms=['ES256']` which requires to set publ
 Application is served via WSGI server using `config/wsgi.py`.
 For production use Gunicorn instead of Django development server.
 
-## Points in GeoJSON
+## API Endpoints
 
-For coordinate representation in `serializers.py` in class `MapPointSerializer` objects 'latitude' and 'longitude' are set with `write_only=True` parameter.
-They are converted into `coordinates` form using `get_geometry` method.
+| Method | Endpoint | Permission | Description |
+|--------|----------|------------|-------------|
+| GET | /api/markers/ | viewer+ | List all markers |
+| POST | /api/markers/ | editor+ | Create marker |
+| DELETE | /api/markers/{id}/ | admin | Delete marker |
+| POST | /api/markers/{id}/confirm/ | viewer+ | Confirm marker |
+| DELETE | /api/markers/{id}/confirm/ | viewer+ | Remove confirmation |
+| POST | /api/markers/{id}/image/ | editor+ | Upload image to S3 |
+| GET | /api/categories/ | viewer+ | List categories |
+| POST | /api/categories/ | admin | Create category |
+
+## AWS S3
+
+Images are stored in AWS S3. Required variables in .env:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_STORAGE_BUCKET_NAME`
+- `AWS_S3_REGION_NAME`
 
 ## Running locally
 
