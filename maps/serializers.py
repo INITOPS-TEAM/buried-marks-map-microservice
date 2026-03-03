@@ -21,7 +21,7 @@ class MapPointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MapPoint
-        fields = ['id', 'label', 'category', 'lat', 'lng', 'author_id', 'confirm_count', 'confirmed_by_me', 'image']
+        fields = ['id', 'label', 'category', 'lat', 'lng', 'author_id', 'confirm_count', 'confirmed_by_me', 'image', 'description']
 
     def get_confirm_count(self, obj):
         return obj.confirmations.count()

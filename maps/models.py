@@ -1,4 +1,9 @@
 from django.db import models
+import uuid
+
+def marker_image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    return f'markers/{uuid.uuid4()}.{ext}'
 
 
 class ArtifactCategory(models.Model):
@@ -14,7 +19,8 @@ class MapPoint(models.Model):
     lat = models.DecimalField(decimal_places=18, max_digits=20, default=0.0)
     lng = models.DecimalField(decimal_places=18, max_digits=20, default=0.0)
     author_id = models.IntegerField()
-    image = models.ImageField(upload_to='markers/', blank=True, null=True)
+    image = models.ImageField(upload_to=marker_image_path, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
