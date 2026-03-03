@@ -8,6 +8,7 @@
         "lat": "50.426901450626360000",
         "lng": "30.563747823436955000",
         "author_id": 1,
-        "image": "markers/Motherland_Small.jpeg"
+        "image": "markers/Motherland_Small.jpeg",
+        "description": "First Point"
     }}
 ]
