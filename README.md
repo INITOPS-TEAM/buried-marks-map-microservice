@@ -27,16 +27,16 @@ For production use Gunicorn instead of Django development server.
 
 ## API Endpoints
 
-| Method | Endpoint | Permission | Description |
-|--------|----------|------------|-------------|
-| GET | /api/markers/ | viewer+ | List all markers |
-| POST | /api/markers/ | editor+ | Create marker |
-| DELETE | /api/markers/{id}/ | admin | Delete marker |
-| POST | /api/markers/{id}/confirm/ | viewer+ | Confirm marker |
-| DELETE | /api/markers/{id}/confirm/ | viewer+ | Remove confirmation |
-| POST | /api/markers/{id}/image/ | editor+ | Upload image to S3 |
-| GET | /api/categories/ | viewer+ | List categories |
-| POST | /api/categories/ | admin | Create category |
+| Method | Endpoint                   | Permission | Description         |
+|--------|----------------------------|------------|---------------------|
+| GET    | /api/markers/              | viewer+    | List all markers    |
+| POST   | /api/markers/              | editor+    | Create marker       |
+| DELETE | /api/markers/{id}/         | admin      | Delete marker       |
+| POST   | /api/markers/{id}/confirm/ | viewer+    | Confirm marker      |
+| DELETE | /api/markers/{id}/confirm/ | viewer+    | Remove confirmation |
+| POST   | /api/markers/{id}/image/   | editor+    | Upload image to S3  |
+| GET    | /api/categories/           | viewer+    | List categories     |
+| POST   | /api/categories/           | admin      | Create category     |
 
 ## AWS S3
 
