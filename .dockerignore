@@ -1,1 +1,9 @@
 *.md
+.env*
+.gitignore
+ec_public.key
+ec_private.key
+.pylintrc.toml
+generate_token.py
+venv
+.dockerignore
