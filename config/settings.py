@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import sys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -89,6 +90,16 @@ DATABASES = {
         'PORT': os.getenv('DATABASE_PORT', '3306'),
     }
 }
+
+# DB Test definition
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+    MIDDLEWARE = [m for m in MIDDLEWARE if 'cors' not in m.lower()]
 
 
 CORS_ALLOWED_ORIGINS = [
