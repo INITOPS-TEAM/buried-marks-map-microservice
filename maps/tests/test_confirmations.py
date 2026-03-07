@@ -1,18 +1,12 @@
-from django.test import TestCase
 from rest_framework.test import APIClient
 from maps.models import MapPoint, ArtifactCategory, Confirmation
 from unittest.mock import patch
 from maps.middleware import JWTMiddleware
-from maps.tests.utils import make_jwt_mock, create_test_marker
+from maps.tests.utils import make_jwt_mock, create_test_marker, BaseMarkerTestCase
 
 
-class ConfirmationTestCase(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.category = ArtifactCategory.objects.create(name='scout')
-        self.marker = create_test_marker(self.category)
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer test_token')
-
+class ConfirmationTestCase(BaseMarkerTestCase):
+    """Tests for marker confirmations."""
     @patch.object(JWTMiddleware, '__call__', autospec=True)
     def test_confirm_marker(self, mock_jwt):
         mock_jwt.side_effect = make_jwt_mock('1')

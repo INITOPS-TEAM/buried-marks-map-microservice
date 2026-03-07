@@ -1,18 +1,12 @@
-from django.test import TestCase
 from rest_framework.test import APIClient
 from maps.models import MapPoint, ArtifactCategory
 from unittest.mock import patch
 from maps.middleware import JWTMiddleware
-from maps.tests.utils import make_jwt_mock, create_test_marker, TEST_MARKER_POST_DATA
+from maps.tests.utils import make_jwt_mock, create_test_marker, TEST_MARKER_POST_DATA, BaseMarkerTestCase
 
 
-class PermissionsTestCase(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-        self.category = ArtifactCategory.objects.create(name='scout')
-        self.marker = create_test_marker(self.category)
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer test_token')
-
+class PermissionsTestCase(BaseMarkerTestCase):
+    """Tests for marker permissions."""
     @patch.object(JWTMiddleware, '__call__', autospec=True)
     def test_viewer_can_list_markers(self, mock_jwt):
         mock_jwt.side_effect = make_jwt_mock('1')

@@ -1,5 +1,7 @@
+from django.test import TestCase
 from maps.middleware import JWTMiddleware
-from maps.models import MapPoint
+from rest_framework.test import APIClient
+from maps.models import MapPoint, ArtifactCategory
 
 def make_jwt_mock(role='2'):
     def fake_call(middleware, request):
@@ -17,6 +19,15 @@ def create_test_marker(category, author_id=2):
         description='Test description',
         author_id=author_id
     )
+
+class BaseMarkerTestCase(TestCase):
+    """Base test case with common setup."""
+    def setUp(self):
+        super().setUp()
+        self.client = APIClient()
+        self.category = ArtifactCategory.objects.create(name='scout')
+        self.marker = create_test_marker(self.category)
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer test_token')
 
 TEST_MARKER_POST_DATA = {
     'label': 'Test Marker',
