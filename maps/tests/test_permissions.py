@@ -3,21 +3,14 @@ from rest_framework.test import APIClient
 from maps.models import MapPoint, ArtifactCategory
 from unittest.mock import patch
 from maps.middleware import JWTMiddleware
-from maps.tests.utils import make_jwt_mock
+from maps.tests.utils import make_jwt_mock, create_test_marker, TEST_MARKER_POST_DATA
 
 
 class PermissionsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.category = ArtifactCategory.objects.create(name='scout')
-        self.marker = MapPoint.objects.create(
-            label='Test Marker',
-            category=self.category,
-            lat='50.456901450626360000',
-            lng='30.426901450626360010',
-            description='Test description',
-            author_id=1
-        )
+        self.marker = create_test_marker(self.category)
         self.client.credentials(HTTP_AUTHORIZATION='Bearer test_token')
 
     @patch.object(JWTMiddleware, '__call__', autospec=True)
@@ -32,14 +25,7 @@ class PermissionsTestCase(TestCase):
     def test_viewer_cannot_create_marker(self, mock_jwt):
         mock_jwt.side_effect = make_jwt_mock('1')
 
-        response = self.client.post('/api/markers/', {
-            'label': 'Test Marker',
-            'category': 'scout',
-            'lat': '50.416901450626360000',
-            'lng': '30.563747823436955000',
-            'author_id': 1,
-            'description': 'Test Marker'
-        })
+        response = self.client.post('/api/markers/', TEST_MARKER_POST_DATA)
         print(f'\n[test_viewer_cannot_create_marker] status: {response.status_code}')
         self.assertEqual(response.status_code, 403)
 
@@ -47,14 +33,7 @@ class PermissionsTestCase(TestCase):
     def test_editor_can_create_marker(self, mock_jwt):
         mock_jwt.side_effect = make_jwt_mock('2')
 
-        response = self.client.post('/api/markers/', {
-            'label': 'Test Marker',
-            'category': 'scout',
-            'lat': '50.416901450626360000',
-            'lng': '30.563747823436955000',
-            'author_id': 1,
-            'description': 'Test Marker'
-        })
+        response = self.client.post('/api/markers/', TEST_MARKER_POST_DATA )
         print(f'\n[test_editor_can_create_marker] status: {response.status_code}')
         self.assertEqual(response.status_code, 201)
 

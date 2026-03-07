@@ -5,7 +5,7 @@ from maps.models import MapPoint, ArtifactCategory
 from unittest.mock import patch
 from moto import mock_aws
 from maps.middleware import JWTMiddleware
-from maps.tests.utils import make_jwt_mock
+from maps.tests.utils import make_jwt_mock, create_test_marker, TEST_MARKER_POST_DATA
 import boto3
 import os
 
@@ -20,14 +20,7 @@ class MarkerTestCase(TestCase):
     def test_create_marker(self, mock_jwt):
         mock_jwt.side_effect = make_jwt_mock('2')
 
-        response = self.client.post('/api/markers/', {
-            'label': 'Test Marker',
-            'category': 'scout',
-            'lat': '50.416901450626360000',
-            'lng': '30.563747823436955000',
-            'author_id': 1,
-            'description': 'Test Marker'
-        })
+        response = self.client.post('/api/markers/', TEST_MARKER_POST_DATA)
 
         print(f'\n[test_create_marker] status: {response.status_code}, data: {response.data}')
         self.assertEqual(response.status_code, 201)
@@ -37,14 +30,7 @@ class MarkerTestCase(TestCase):
     def test_list_markers(self, mock_jwt):
         mock_jwt.side_effect = make_jwt_mock('1')
 
-        MapPoint.objects.create(
-            label='Test Marker',
-            category=self.category,
-            lat='50.456901450626360000',
-            lng='30.426901450626360010',
-            description='Test description',
-            author_id=1
-        )
+        create_test_marker(self.category)
 
         response = self.client.get('/api/markers/')
         print(f'\n[test_list_markers] status: {response.status_code}, count: {len(response.data)}')
@@ -71,17 +57,10 @@ class MarkerTestCase(TestCase):
         with open(image_path, 'rb') as f:
             image = SimpleUploadedFile('test.jpg', f.read(), content_type='image/jpeg')
 
-        print(f'\n[test_create_and_delete_marker_with_image] markers before: {MapPoint.objects.count()}')
+        count = MapPoint.objects.count()
+        print(f'\n[test_create_and_delete_marker_with_image] markers before: {count}')
 
-        response = self.client.post('/api/markers/', {
-            'label': 'Test Marker',
-            'category': 'scout',
-            'lat': '50.416901450626360000',
-            'lng': '30.563747823436955000',
-            'author_id': 1,
-            'image': image,
-            'description': 'Test Marker'
-        }, format='multipart')
+        response = self.client.post('/api/markers/', TEST_MARKER_POST_DATA)
 
         print(f'[test_create_and_delete_marker_with_image] create status: {response.status_code}, data: {response.data}')
         self.assertEqual(response.status_code, 201)
