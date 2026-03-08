@@ -55,6 +55,28 @@ Images are stored in AWS S3. Required variables in .env:
 4. Run migrations: `python manage.py migrate`.
 5. Start server: `python manage.py runserver`.
 
+## Tests
+
+Run all tests:
+```bash
+make test
+```
+
+Run specific test suites:
+```bash
+make test-markers
+```
+
+```bash
+make test-confirmations
+```
+
+```bash
+make test-permissions
+```
+
+Tests use SQLite in-memory database and mocked AWS S3 via `moto` - no external dependencies required.
+
 ## Code Quality
 
 ### Automated Linting & Formatting
