@@ -1,6 +1,5 @@
 .env
-ec_private.key
-ec_public.key
+*.key
 /venv
 generate_token.py
 __pycache__/
