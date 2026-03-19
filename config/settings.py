@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED _HOSTS').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 pod_ip = os.getenv('POD_IP', '')
 if pod_ip:
     ALLOWED_HOSTS.append(pod_ip)
