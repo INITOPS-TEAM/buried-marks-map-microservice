@@ -10,7 +10,11 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = False
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'map-service']
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+pod_ip = os.getenv('POD_IP', '')
+if pod_ip:
+    ALLOWED_HOSTS.append(pod_ip)
 
 # Application definition
 

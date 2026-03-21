@@ -1,8 +1,12 @@
+__pycache__/
+*.pyc
+.git/
+test_api.http
+
 *.md
 .env*
 .gitignore
-ec_public.key
-ec_private.key
+*.key
 .pylintrc.toml
 generate_token.py
 venv
