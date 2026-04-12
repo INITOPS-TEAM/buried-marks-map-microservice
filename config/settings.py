@@ -3,6 +3,7 @@
 from pathlib import Path
 import os
 import sys
+import boto3
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -31,8 +32,8 @@ INSTALLED_APPS = [
     'storages',
 ]
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = os.getenv('APP_AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('APP_AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
 AWS_S3_FILE_OVERWRITE = True
@@ -87,13 +88,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 
 DATABASES = {
-'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MARIADB_DATABASE'),
-        'USER': os.getenv('MARIADB_USER'),
-        'PASSWORD': os.getenv('MARIADB_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT', '3306'),
+    'default': {
+        'ENGINE': 'awsengine',
+        'NAME': os.environ.get('MARIADB_DATABASE'),
+        'USER': os.environ.get('MARIADB_USER'),
+        'PASSWORD': os.environ.get('MARIADB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT', '3306'),
+        'OPTIONS': {'ssl': {'ca': '/app/global-bundle.pem'}}
     }
 }
 
