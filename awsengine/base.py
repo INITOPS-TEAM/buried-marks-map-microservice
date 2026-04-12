@@ -16,7 +16,6 @@ def get_aws_connection_params(params):
             Port=params.get("port", 3306),
             DBUsername=params.get("user", os.environ.get("MARIADB_USER")),
         )
-    print(params)
     return params
 
 
