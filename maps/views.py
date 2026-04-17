@@ -1,4 +1,5 @@
 """Views for the maps application."""
+from django.db.models import Count
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
@@ -13,6 +14,33 @@ from .permissions import IsEditor, IsAdmin, HasMapAccess
 def health_check(request):
     """Health check endpoint."""
     return Response({"status": "ok"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def moderation_marks(request):
+    """ Internal endpoint for MCP AI Agent """
+    try:
+        limit = int(request.query_params.get('limit'))
+    except (ValueError, TypeError):
+        limit = 20
+
+    marks = MapPoint.objects.select_related('category').annotate(
+        conf_count=Count('confirmations')
+    ).filter(
+        conf_count__lt=2 #Include marks only with fewer than 2 confirmations
+    ).order_by('-id')[:limit]
+
+    data = []
+    for mark in marks:
+        data.append({
+            "id": mark.id,
+            "label": mark.label,
+            "description": mark.description or "",
+            "category": mark.category.name if mark.category else "Unknown",
+            "confirmations": mark.conf_count
+        })
+
+    return Response(data, status=status.HTTP_200_OK)
 
 class ArtifactCategoryViewSet(viewsets.ModelViewSet):
     """ViewSet for artifact categories."""

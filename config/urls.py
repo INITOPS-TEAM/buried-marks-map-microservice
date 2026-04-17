@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from maps.views import MapPointViewSet, ArtifactCategoryViewSet, health_check
+from maps.views import MapPointViewSet, ArtifactCategoryViewSet, health_check, moderation_marks
 
 router = DefaultRouter()
 router.register('markers', MapPointViewSet)
@@ -13,4 +13,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('health/', health_check),
+    path('api/internal/marks/moderation', moderation_marks, name='internal-moderation'),
 ]
